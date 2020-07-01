@@ -1,5 +1,7 @@
 'use strict';
 
+require('dotenv').config();
+
 // Dependencies
 const express = require('express');
 const cors = require('cors');
@@ -9,7 +11,8 @@ const app = express();
 app.use(cors());
 
 // Global Variables
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
+
 
 // Route Definitions
 app.get('/todo', handleToDo());
@@ -30,8 +33,10 @@ function handleToDo(request, response) {
 }
 
 // Go!
-function startServer() {
-  express.listen(PORT, () => console.log('Server is running'));
-}
 
-startServer();
+app.listen(PORT, () => console.log('Server is running', PORT));
+
+
+app.use('*', (request, response) => {
+  response.status(404).send('You broke something.. Good job.');
+});
